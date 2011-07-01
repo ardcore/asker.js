@@ -5,7 +5,7 @@ questions should be passed as array of object, each described using the followin
 
 `{ topic: 'sex', question: 'What is your sex?', options: ['male', 'female'], default: 'male', mandatory: true }`
 
-where `topic` will become key of the returned object, `question` is merely question displayed, `options` - if present - narrow the possible answer to one of them. `default` and `mandatory` are probably obvious.
+where `topic` will become key of the returned object, `question` is merely question displayed, `options` - if present - enforce the possible answer to be one of them. `default` and `mandatory` are probably obvious.
 
 bare minimum: `{ topic: 'hello', question: 'how are you?' }`
  
