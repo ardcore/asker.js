@@ -1,0 +1,19 @@
+asker asks questions in the console, grabs responses and returns them as object.
+it can be used for various generators/makefiles etc.
+
+questions should be passed as array of object, each described using the following format:
+
+`{ topic: 'sex', question: 'What is your sex?', options: ['male', 'female'], default: 'male', mandatory: true }`
+
+where `topic` will become key of the returned object, `question` is merely question displayed, `options` - if present - narrow the possible answer to one of them. `default` and `mandatory` are probably obvious.
+
+bare minimum: `{ topic: 'hello', question: 'how are you?' }`
+ 
+after all questions are answered, callback function is invoked.
+example:
+
+`asker.ask(questionArray, function(err, data) {
+	if (err) throw err;
+	console.log(data);
+})`
+
