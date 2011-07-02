@@ -36,7 +36,7 @@ function handleResponse(chunk, current, questions, cb) {
 			askQuestionFromIndex(current);
 		}
 	}
-	return handleResponse(chunk, current, questions, cb);
+	return handleResponse(chunk);
 }
 
 function ask(questions, cb) {
