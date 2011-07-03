@@ -11,16 +11,16 @@ function isInArray(needle, arr) {
 function askQuestionFromIndex(current, questions) {
 	askQuestionFromIndex = function(current) {
 		var q = questions[current];
-		q = stabilizeQuestion(q, ['callback', 'check']);
+		q = stabilizeQuestion(q, ['callback', 'check'], results);
 		printQuestion(current + 1, q);
 	}
 	return askQuestionFromIndex(current);
 }
 
-function stabilizeQuestion(question, exceptionList) {
+function stabilizeQuestion(question, exceptionList, results) {
 	for (var i in question) {
 		if (question.hasOwnProperty(i) && typeof question[i] == 'function' && !isInArray(i, exceptionList)) {
-			question[i] = question[i]();
+			question[i] = question[i](results);
 		}
 	}
 	return question;
