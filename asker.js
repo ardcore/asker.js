@@ -11,11 +11,20 @@ function isInArray(needle, arr) {
 function askQuestionFromIndex(current, questions) {
 	askQuestionFromIndex = function(current) {
 		var q = questions[current];
+		q = stabilizeQuestion(q, ['callback', 'check']);
 		printQuestion(current + 1, q);
 	}
 	return askQuestionFromIndex(current);
 }
 
+function stabilizeQuestion(question, exceptionList) {
+	for (var i in question) {
+		if (question.hasOwnProperty(i) && typeof question[i] == 'function' && !isInArray(i, exceptionList)) {
+			question[i] = question[i]();
+		}
+	}
+	return question;
+}
 
 function handleResponse(chunk, current, questions, cb) {
 	handleResponse = function(chunk) {
@@ -23,7 +32,9 @@ function handleResponse(chunk, current, questions, cb) {
 		chunk = chunk.trim() || q.default || "";
 		var mandatoryFulfilled = (!q.mandatory || chunk.length != 0);
 		var optionsFulfilled = (!q.options || isInArray(chunk, q.options));
-		if (mandatoryFulfilled && optionsFulfilled) {
+		var checkFulfilled = (!q.check || q.check(chunk, results, current));
+		if (mandatoryFulfilled && optionsFulfilled && checkFulfilled) {
+			q.callback && q.callback(chunk, results, current);
 			current++;
 			results[q.topic] = chunk;
 			if (current < questions.length) {
@@ -33,6 +44,7 @@ function handleResponse(chunk, current, questions, cb) {
 				cb(null, results);
 			}
 		} else {
+			process.stdout.write("\tInvalid input, try again.\n");
 			askQuestionFromIndex(current);
 		}
 	}
@@ -61,5 +73,9 @@ function printQuestion(index, q) {
 	bundle = bundle.join('');
 	process.stdout.write(bundle);
 }
-exports.ask = ask;
 
+function getAnswer(topic) {
+	return results[topic];
+}
+exports.getAnswer = getAnswer;
+exports.ask = ask;
