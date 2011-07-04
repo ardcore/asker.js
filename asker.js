@@ -5,7 +5,7 @@ var sys = require('sys');
 var results;
 
 function isInArray(needle, arr) {
-	return (arr.indexOf(needle) != - 1);
+	return arr.indexOf(needle) != - 1;
 }
 
 function askQuestionFromIndex(current, questions) {
@@ -29,7 +29,7 @@ function stabilizeQuestion(question, exceptionList, results) {
 function handleResponse(chunk, current, questions, cb) {
 	handleResponse = function(chunk) {
 		var q = questions[current];
-		chunk = chunk.trim() || q.def || "";
+		chunk = chunk.trim() || q.def || '';
 		var mandatoryFulfilled = (!q.mandatory || chunk.length != 0);
 		var optionsFulfilled = (!q.options || isInArray(chunk, q.options));
 		var checkFulfilled = (!q.check || q.check(chunk, results, current));
@@ -44,7 +44,7 @@ function handleResponse(chunk, current, questions, cb) {
 				cb(null, results);
 			}
 		} else {
-			process.stdout.write("\tInvalid input, try again.\n");
+			process.stdout.write('\tInvalid input, try again.\n');
 			askQuestionFromIndex(current);
 		}
 	}
@@ -64,12 +64,11 @@ function ask(questions, cb) {
 
 function printQuestion(index, q) {
 	var bundle = [];
-	bundle.push(index + ". ");
-	bundle.push(q.question + " ");
-	if (q.options) bundle.push("[" + q.options.join("/") + "]");
-	if (q.def) bundle.push("[default:" + q.def) 
-	bundle.push("[default:" + q.
-	if (q.mandatory) bundle.push("(*)");
+	bundle.push(index + '. ');
+	bundle.push(q.question + ' ');
+	if (q.options) bundle.push('[' + q.options.join('/') + ']');
+	if (q.def) bundle.push('[default:' + q.def + ']');
+	if (q.mandatory) bundle.push('(*)');
 	bundle.push(' ');
 	bundle = bundle.join('');
 	process.stdout.write(bundle);
@@ -80,4 +79,3 @@ function getAnswer(topic) {
 }
 exports.getAnswer = getAnswer;
 exports.ask = ask;
-
